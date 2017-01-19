@@ -1,0 +1,8 @@
+[package]
+name = "az"
+version = "0.1.0"
+authors = ["you <you@example.com>"]
+
+[dependencies]
+hyper = "0.10"
+encoding = "0.2"
