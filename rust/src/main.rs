@@ -111,13 +111,14 @@ fn summary(body: String) -> String {
 
 fn contline(line: String, num: u32) -> (u32, String) {
     let ret = num;
-    let tt = line.find(PUNCT).unwrap_or(line.len());
+    let pos = line.find(PUNCT).unwrap_or(line.len());
+    //println!("pos: {}, line.len(): {}", pos, line.len());
     if line.trim() == "" {
         (ret, "".to_string())
-    } else if tt == line.len() { // todo
+    } else if pos == line.len() { // todo
         (ret -1, line)
     } else {
-        (ret -1, line) // todo
+        (ret -1, format!("{}{}", line[..pos].to_string(), PUNCT))
     }
 }
 
@@ -137,7 +138,6 @@ fn main() {
              .required(false)
              .index(1)).get_matches();
     let bid000 = matches.value_of("bookid").unwrap_or("default");
-    println!("bid000: {}", bid000);
     let bookid: String =
         if bid000 == "default".to_string() {
             randombid().to_string()
