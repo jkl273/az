@@ -39,7 +39,7 @@ fn getaz(url: String) -> String {
     let client = Client::new();
     let mut res = client.get(url.as_str()).send().unwrap();
     assert_eq!(res.status, hyper::Ok);
-    //println!("{:?}", res);
+    debug!("{:?}", res);
 
     let mut buffer = Vec::new();
     res.read_to_end(&mut buffer).unwrap();
@@ -117,7 +117,7 @@ fn summary(body: String) -> String {
 fn contline(line: String, num: u32) -> (u32, String) {
     let ret = num;
     let pos = line.find(PUNCT).unwrap_or(line.len());
-    //println!("pos: {}, line.len(): {}", pos, line.len());
+    debug!("pos: {}, line.len(): {}", pos, line.len());
     if line.trim() == "" {
         (ret, "".to_string())
     } else if pos == line.len() { // todo
@@ -131,7 +131,7 @@ fn randombid() -> u64 {
     let mut rng = rand::thread_rng();
     let between = Range::new(0, MAXIDX);
     let idx = between.ind_sample(&mut rng);
-    //println!("{}", idx);
+    debug!("{}", idx);
     getidx(idx)
 }
     
