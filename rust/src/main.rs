@@ -22,7 +22,6 @@ static MAXIDX: u32 = 100;
 static MAXLEN: usize = 1000;
 static URL000: &'static str = "http://www.aozorahack.net/api/v0.1/";
 static PUNCT: &'static str = "\u{3002}"; // 'IDEOGRAPHIC FULL STOP' (U+3002)
-static UNDEFSTR: &'static str = "__undefined__";
 
 fn getbook(bid: String) -> String {
     let url2 = format!("{url}books/{bid}/content", url=URL000, bid=bid);
@@ -144,12 +143,11 @@ fn main() {
              .help("book id")
              .required(false)
              .index(1)).get_matches();
-    let bid000 = matches.value_of("bookid").unwrap_or(UNDEFSTR);
     let bookid: String =
-        if bid000 == UNDEFSTR.to_string() {
-            randombid().to_string()
-        } else {
+        if let Some(bid000) =  matches.value_of("bookid") {
             bid000.to_string()
+        } else {
+            randombid().to_string()
         };
     
     println!("book id: {}", bookid);
