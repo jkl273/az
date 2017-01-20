@@ -3,7 +3,8 @@ extern crate encoding;
 extern crate rand;
 extern crate rustc_serialize;
 extern crate regex;
-
+extern crate clap;
+use clap::{Arg, App};
 use hyper::client::Client;
 use std::io::prelude::*;
 use rand::distributions::{IndependentSample, Range};
@@ -120,13 +121,30 @@ fn contline(line: String, num: u32) -> (u32, String) {
     }
 }
 
-fn main() {
+fn randombid() -> u64 {
     let mut rng = rand::thread_rng();
     let between = Range::new(0, MAXIDX);
     let idx = between.ind_sample(&mut rng);
     //println!("{}", idx);
+    getidx(idx)
+}
     
-    let bookid = getidx(idx);
+fn main() {
+    let matches = App::new("az")
+        .version("1.0")
+        .arg(Arg::with_name("bookid")
+             .help("book id")
+             .required(false)
+             .index(1)).get_matches();
+    let bid000 = matches.value_of("bookid").unwrap_or("default");
+    println!("bid000: {}", bid000);
+    let bookid: String =
+        if bid000 == "default".to_string() {
+            randombid().to_string()
+        } else {
+            bid000.to_string()
+        };
+    
     println!("book id: {}", bookid);
     let body = getbook(bookid.to_string());
     let sum = summary(body);
