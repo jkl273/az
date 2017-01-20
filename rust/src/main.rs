@@ -4,6 +4,10 @@ extern crate rand;
 extern crate rustc_serialize;
 extern crate regex;
 extern crate clap;
+
+#[macro_use]
+extern crate log;
+
 use clap::{Arg, App};
 use hyper::client::Client;
 use std::io::prelude::*;
@@ -81,9 +85,9 @@ fn summary(body: String) -> String {
     
     let lines = body.lines();
     for line in lines {
-        //println!("state: {}", state);
+        debug!("state: {}", state);
         state = next(state, line.to_string());
-        //println!("state: {}, line: {}", state, line);
+        debug!("state: {}, line: {}", state, line);
         if state == 0 { // head
             if line.len() >= MAXLEN {
                 ret = format!("{}\nline too long: {}\n", ret, line.len());
