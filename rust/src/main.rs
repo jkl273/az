@@ -7,6 +7,7 @@ extern crate clap;
 
 #[macro_use]
 extern crate log;
+extern crate env_logger;
 
 use clap::{Arg, App};
 use hyper::client::Client;
@@ -135,6 +136,7 @@ fn randombid() -> u64 {
 }
     
 fn main() {
+    env_logger::init().unwrap();
     let matches = App::new("az")
         .version("1.0")
         .arg(Arg::with_name("bookid")
