@@ -12,8 +12,9 @@ use encoding::{Encoding, DecoderTrap};
 use encoding::all::WINDOWS_31J; // shift jis
 use regex::Regex;
 
-static MAXIDX: u32 = 3;
+static MAXIDX: u32 = 100;
 static URL000: &'static str = "http://www.aozorahack.net/api/v0.1/";
+static PUNCT: &'static str = "\u{3002}";
 
 fn getbook(bid: String) -> String {
     let url2 = format!("{url}books/{bid}/content", url=URL000, bid=bid);
@@ -90,11 +91,28 @@ fn summary(body: String) -> String {
         } else if state == 3 { //post-comment
             //
         } else if state == 4 { // body
-            ret = format!("{}{}\n", ret, line);
-            break
+            let (num, vvv) = contline(line.to_string(), 1);
+            ret = format!("{}{}", ret, vvv);
+            if num > 0 {
+                continue
+            } else {
+                break
+            }
         }
     }
     ret
+}
+
+fn contline(line: String, num: u32) -> (u32, String) {
+    let ret = num;
+    let tt = line.find(PUNCT).unwrap_or(line.len());
+    if line.trim() == "" {
+        (ret, "".to_string())
+    } else if tt == line.len() { // todo
+        (ret -1, line)
+    } else {
+        (ret -1, line) // todo
+    }
 }
 
 fn main() {
