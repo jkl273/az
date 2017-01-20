@@ -3,7 +3,7 @@
 
 import json, requests, random, re, sys, argparse
 
-punct = u"。"
+punct = u"\u3002" # 'IDEOGRAPHIC FULL STOP' (U+3002)
 url = "http://www.aozorahack.net/api/v0.1/"
 MAXLEN = 1000
 
