@@ -21,7 +21,7 @@ use regex::Regex;
 static MAXIDX: u32 = 100;
 static MAXLEN: usize = 1000;
 static URL000: &'static str = "http://www.aozorahack.net/api/v0.1/";
-static PUNCT: &'static str = "\u{3002}";
+static PUNCT: &'static str = "\u{3002}"; // 'IDEOGRAPHIC FULL STOP' (U+3002)
 
 fn getbook(bid: String) -> String {
     let url2 = format!("{url}books/{bid}/content", url=URL000, bid=bid);
