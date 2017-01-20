@@ -101,8 +101,7 @@ def dbgprint(x):
   if ppp.debug:
     print(x)
   
-
-if __name__ == "__main__":
+def main():
   parser = argparse.ArgumentParser(description='az')
   parser.add_argument('-d', '--debug', action='store_true', help='debug')
   parser.add_argument('-m', '--max', type=int, default=13772, help='max entries')
@@ -112,6 +111,7 @@ if __name__ == "__main__":
   parser.add_argument('-n', '--num', type=int, default=1, help='number of lines')
   parser.add_argument('bookid', nargs='?', default=None)
 
+  global ppp
   ppp = parser.parse_args(sys.argv[1:])
 
   if ppp.bookid != None:
@@ -136,3 +136,5 @@ if __name__ == "__main__":
   else:
     summary(text, ppp.code, ppp.num)
     
+if __name__ == "__main__":
+  main()
