@@ -11,15 +11,16 @@ use rustc_serialize::json::Json;
 use encoding::{Encoding, DecoderTrap};
 use encoding::all::WINDOWS_31J; // shift jis
 
+static MAXIDX: u32 = 3;
+static URL000: &'static str = "http://www.aozorahack.net/api/v0.1/";
+
 fn getbook(bid: String) -> String {
-    let url = "http://www.aozorahack.net/api/v0.1/";
-    let url2 = format!("{url}books/{bid}/content", url=url, bid=bid);
+    let url2 = format!("{url}books/{bid}/content", url=URL000, bid=bid);
     getaz(url2)
 }
 
 fn getidx(idx: u32) -> u64 {
-    let url = "http://www.aozorahack.net/api/v0.1/";
-    let url2 = format!("{url}books?limit=1&skip={idx}", url=url, idx=idx);
+    let url2 = format!("{url}books?limit=1&skip={idx}", url=URL000, idx=idx);
     let data = Json::from_str(getaz(url2).as_str()).unwrap();
     let arr = data.as_array().unwrap();
     arr[0]["book_id"].as_u64().unwrap()
@@ -47,9 +48,8 @@ fn summary(body: String) -> String {
 }
 
 fn main() {
-    let maxidx = 3;
     let mut rng = rand::thread_rng();
-    let between = Range::new(0, maxidx);
+    let between = Range::new(0, MAXIDX);
     let idx = between.ind_sample(&mut rng);
     println!("{}", idx);
     
