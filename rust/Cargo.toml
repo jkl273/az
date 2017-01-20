@@ -6,3 +6,5 @@ authors = ["you <you@example.com>"]
 [dependencies]
 hyper = "0.10"
 encoding = "0.2"
+rand = "0.3"
+rustc-serialize = "0.3"
