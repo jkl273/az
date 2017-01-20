@@ -5,6 +5,7 @@ import json, requests, random, re, sys, argparse
 
 punct = u"。"
 url = "http://www.aozorahack.net/api/v0.1/"
+MAXLEN = 1000
 
 def getbook(bid):
   cont = requests.get(url+"books/"+str(bid)+"/content")
@@ -26,6 +27,8 @@ def next(state, line):
     if line.strip() == '':
       return 1
     else:
+      if len(line) > MAXLEN:
+        sys.exit("line too long %s" % len(line))
       return 0
   if state == 1: # post-head
     if line.strip() == '':
