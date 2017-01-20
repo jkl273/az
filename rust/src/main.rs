@@ -13,6 +13,7 @@ use encoding::all::WINDOWS_31J; // shift jis
 use regex::Regex;
 
 static MAXIDX: u32 = 100;
+static MAXLEN: usize = 1000;
 static URL000: &'static str = "http://www.aozorahack.net/api/v0.1/";
 static PUNCT: &'static str = "\u{3002}";
 
@@ -83,6 +84,10 @@ fn summary(body: String) -> String {
         state = next(state, line.to_string());
         //println!("state: {}, line: {}", state, line);
         if state == 0 { // head
+            if line.len() >= MAXLEN {
+                ret = format!("{}\nline too long: {}\n", ret, line.len());
+                continue
+            }
             ret = format!("{}{}\n", ret, line);
         } else if state == 1 { // post-head
             ret = format!("{}\n=======\n", ret)
