@@ -83,8 +83,8 @@ fn next(state: u32, line: String) -> u32 {
         4 => { // body
             return 4
         }
-        _ => { // after-body
-            return 5
+        _ => {
+            return 4
         }
     }
 }
@@ -124,11 +124,12 @@ fn summary(body: String) -> String {
                                    // get more
                                    Ok((acc + &vvv.to_string(), state))
                                } else {
-                                   // no more
-                                   Ok((acc + &vvv.to_string(), state + 1))
+                                   // no more line to handle
+                                   //   - not an error actually
+                                   Err(acc + &vvv.to_string())
                                }
                            }
-                           _ => Err(acc) // todo: break somehow
+                           _ => Err(format!("unknown state: {}\n", state))
                        }
                    });
     match res {
