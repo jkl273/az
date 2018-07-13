@@ -92,9 +92,9 @@ fn next(state: u32, line: String) -> u32 {
 fn summary(body: String) -> String {
     let empty: String  = "".to_string();
     
-    let lines = body.lines();
-    let (ret, _) =
-        lines.fold((empty, 0),
+    let mut lines = body.lines();
+    let res =
+        lines.try_fold((empty, 0),
                    |(acc, oldstate), line| {
                        debug!("oldstate: {}", oldstate);
                        let state = next(oldstate, line.to_string());
@@ -102,36 +102,39 @@ fn summary(body: String) -> String {
                        match state {
                            0 => { // head
                                if line.len() >= MAXLEN {
-                                   (format!("{}\nline too long: {}\n",
-                                            acc, line.len()),
-                                    state)
+                                   Ok((format!("{}\nline too long: {}\n",
+                                               acc, line.len()),
+                                       state))
                                } else {
-                                   (acc + line + "\n", state)
+                                   Ok((acc + line + "\n", state))
                                }
                            }
                            1 => { // post-head
-                               (format!("{}=======\n", acc), state)
+                               Ok((format!("{}=======\n", acc), state))
                            }
                            2 => { // comment
-                               (acc, state)
+                               Ok((acc, state))
                            }
                            3 => { // post-comment
-                               (acc, state)
+                               Ok((acc, state))
                            }
                            4 => { // body
                                let (num, vvv) = contline(line.to_string(), 1);
                                if num > 0 {
                                    // get more
-                                   (acc + &vvv.to_string(), state)
+                                   Ok((acc + &vvv.to_string(), state))
                                } else {
                                    // no more
-                                   (acc + &vvv.to_string(), state + 1)
+                                   Ok((acc + &vvv.to_string(), state + 1))
                                }
                            }
-                           _ => (acc, state) // todo: break somehow
+                           _ => Err((acc, state)) // todo: break somehow
                        }
                    });
-    ret
+    match res {
+        Ok((x,_)) => x,
+        Err((y,_)) => y
+    }
 }
 
 fn contline(line: String, num: u32) -> (u32, String) {
