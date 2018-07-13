@@ -49,34 +49,40 @@ fn getaz(url: String) -> String {
 
 fn next(state: u32, line: String) -> u32 {
     let re = Regex::new(r"^--*$").unwrap();
-    if state == 0 { // head
-        if line.trim() == "" {
-            return 1
-        } else {
-            return 0
+    match state {
+        0 => { // head
+            if line.trim() == "" {
+                return 1
+            } else {
+                return 0
+            }
         }
-    } else if state == 1 { // post-head
-        if line.trim() == "" {
-            return 1
-        } else if re.is_match(line.trim()) {
-            return 2
-        } else {
+        1 => { // post-head
+            if line.trim() == "" {
+                return 1
+            } else if re.is_match(line.trim()) {
+                return 2
+            } else {
+                return 4
+            }
+        }
+        2 => { // comment
+            if re.is_match(line.trim()) {
+                return 3
+            } else {
+                return 2
+            }
+        }
+        3 => { // post-comment
+            if line.trim() == "" {
+                return 3
+            } else {
+                return 4
+            }
+        }
+        _ => { // body
             return 4
         }
-    } else if state == 2 { // comment
-        if re.is_match(line.trim()) {
-            return 3
-        } else {
-            return 2
-        }
-    } else if state == 3 { // post-comment
-        if line.trim() == "" {
-            return 3
-        } else {
-            return 4
-        }
-    } else { // body
-        return 4
     }
 }
 
