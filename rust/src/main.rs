@@ -128,12 +128,12 @@ fn summary(body: String) -> String {
                                    Ok((acc + &vvv.to_string(), state + 1))
                                }
                            }
-                           _ => Err((acc, state)) // todo: break somehow
+                           _ => Err(acc) // todo: break somehow
                        }
                    });
     match res {
         Ok((x,_)) => x,
-        Err((y,_)) => y
+        Err(y) => y
     }
 }
 
