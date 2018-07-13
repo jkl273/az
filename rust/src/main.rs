@@ -122,11 +122,11 @@ fn summary(body: String) -> String {
                                let (num, vvv) = contline(line.to_string(), 1);
                                if num > 0 {
                                    // get more
-                                   Ok((acc + &vvv.to_string(), state))
+                                   Ok((acc + &vvv, state))
                                } else {
                                    // no more line to handle
                                    //   - not an error actually
-                                   Err(acc + &vvv.to_string())
+                                   Err(acc + &vvv)
                                }
                            }
                            _ => Err(format!("unknown state: {}\n", state))
