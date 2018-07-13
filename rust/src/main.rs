@@ -80,43 +80,57 @@ fn next(state: u32, line: String) -> u32 {
                 return 4
             }
         }
-        _ => { // body
+        4 => { // body
             return 4
+        }
+        _ => { // after-body
+            return 5
         }
     }
 }
 
 fn summary(body: String) -> String {
-    let mut state: u32 = 0;
-    let mut ret: String  = "".to_string();
+    let empty: String  = "".to_string();
     
     let lines = body.lines();
-    for line in lines {
-        debug!("state: {}", state);
-        state = next(state, line.to_string());
-        debug!("state: {}, line: {}", state, line);
-        if state == 0 { // head
-            if line.len() >= MAXLEN {
-                ret = format!("{}\nline too long: {}\n", ret, line.len());
-                continue
-            }
-            ret = format!("{}{}\n", ret, line);
-        } else if state == 1 { // post-head
-            ret = format!("{}\n=======\n", ret)
-        } else if state == 2 { // comment
-            //
-        } else if state == 3 { //post-comment
-            //
-        } else if state == 4 { // body
-            let (num, vvv) = contline(line.to_string(), 1);
-            ret = format!("{}{}", ret, vvv);
-            if num > 0 {
-                continue
-            } else {
-                break
-            }
-        }
-    }
+    let (ret, _) =
+        lines.fold((empty, 0),
+                   |(acc, oldstate), line| {
+                       debug!("oldstate: {}", oldstate);
+                       let state = next(oldstate, line.to_string());
+                       debug!("state: {}, line: {}", state, line);
+                       match state {
+                           0 => { // head
+                               if line.len() >= MAXLEN {
+                                   (format!("{}\nline too long: {}\n",
+                                            acc, line.len()),
+                                    state)
+                               } else {
+                                   (acc + line + "\n", state)
+                               }
+                           }
+                           1 => { // post-head
+                               (format!("{}=======\n", acc), state)
+                           }
+                           2 => { // comment
+                               (acc, state)
+                           }
+                           3 => { // post-comment
+                               (acc, state)
+                           }
+                           4 => { // body
+                               let (num, vvv) = contline(line.to_string(), 1);
+                               if num > 0 {
+                                   // get more
+                                   (acc + &vvv.to_string(), state)
+                               } else {
+                                   // no more
+                                   (acc + &vvv.to_string(), state + 1)
+                               }
+                           }
+                           _ => (acc, state) // todo: use try_fold to break
+                       }
+                   });
     ret
 }
 
