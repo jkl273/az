@@ -128,7 +128,7 @@ fn summary(body: String) -> String {
                                    (acc + &vvv.to_string(), state + 1)
                                }
                            }
-                           _ => (acc, state) // todo: use try_fold to break
+                           _ => (acc, state) // todo: break somehow
                        }
                    });
     ret
