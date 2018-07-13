@@ -90,7 +90,7 @@ fn next(state: u32, line: String) -> u32 {
 }
 
 fn summary(body: String) -> String {
-    let empty: String  = "".to_string();
+    let empty: String  = String::from("");
     
     let mut lines = body.lines();
     let res =
