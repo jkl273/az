@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"fmt"
 	"github.com/spf13/cobra"
 )
 
@@ -9,7 +10,12 @@ var RootCmd = &cobra.Command{
 	Use:   "az",
 	Short: "get az",
 	Long:  "get az",
-	RunE: func(cmd *cobra.Command, args []string) error { return nil },
+	RunE: az,
+}
+
+func az(cmd *cobra.Command, args []string) error {
+	fmt.Printf("QQQ az:\n")
+	return nil
 }
 
 func init() {
