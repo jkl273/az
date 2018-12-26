@@ -1,7 +1,7 @@
 package main
 
-import "fmt"
+import "az/cmd"
 
 func main() {
-	fmt.Printf("az\n")
+	cmd.Execute()
 }
