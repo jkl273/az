@@ -16,6 +16,7 @@ func rootCmd() *cobra.Command {
 	cmd.Flags().BoolP("debug", "d", false, "out encoding")
 	cmd.Flags().IntP("max", "m", 13772, "max entries")
 	cmd.Flags().StringP("code", "c", "utf-8", "out encoding")
+	cmd.AddCommand(testCmd())
 	return cmd
 }
 
