@@ -2,15 +2,21 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"github.com/spf13/cobra"
 )
 
-// RootCmd represents the base command when called without any subcommands
-var RootCmd = &cobra.Command{
-	Use:   "az",
-	Short: "get az",
-	Long:  "get az",
-	RunE: az,
+func rootCmd() *cobra.Command {
+	cmd := &cobra.Command {
+		Use:   "az",
+		Short: "get az",
+		Long:  "get az",
+		RunE: az,
+	}
+	cmd.Flags().BoolP("debug", "d", false, "out encoding")
+	cmd.Flags().IntP("max", "m", 13772, "max entries")
+	cmd.Flags().StringP("code", "c", "utf-8", "out encoding")
+	return cmd
 }
 
 func az(cmd *cobra.Command, args []string) error {
@@ -18,8 +24,11 @@ func az(cmd *cobra.Command, args []string) error {
 	return nil
 }
 
-func init() {
-	RootCmd.Flags().BoolP("debug", "d", false, "out encoding")
-	RootCmd.Flags().IntP("max", "m", 13772, "max entries")
-	RootCmd.Flags().StringP("code", "c", "utf-8", "out encoding")
+func Execute() {
+	if err := rootCmd().Execute(); err == nil {
+		return
+	} else {
+		fmt.Printf("%s: %s\n", os.Args[0], err)
+		os.Exit(1)
+	}
 }
