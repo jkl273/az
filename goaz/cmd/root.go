@@ -1,27 +1,17 @@
 package cmd
 
 import (
-	"fmt"
-	"os"
-
 	"github.com/spf13/cobra"
 )
 
 // RootCmd represents the base command when called without any subcommands
 var RootCmd = &cobra.Command{
-	Use:   "cli-demo",
-	Short: "Short comment",
-	Long:  "Long comment",
-	//Run: func(cmd *cobra.Command, args []string) { },
-}
-
-//Execute is called from main function
-func Execute() {
-	if err := RootCmd.Execute(); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
+	Use:   "az",
+	Short: "get az",
+	Long:  "get az",
+	RunE: func(cmd *cobra.Command, args []string) error { return nil },
 }
 
 func init() {
+	RootCmd.Flags().StringP("code", "c", "utf-8", "out encoding")
 }
