@@ -13,5 +13,7 @@ var RootCmd = &cobra.Command{
 }
 
 func init() {
+	RootCmd.Flags().BoolP("debug", "d", false, "out encoding")
+	RootCmd.Flags().IntP("max", "m", 13772, "max entries")
 	RootCmd.Flags().StringP("code", "c", "utf-8", "out encoding")
 }
