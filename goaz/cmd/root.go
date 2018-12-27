@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"reflect"
 	"os"
 	"github.com/spf13/cobra"
 )
@@ -21,7 +22,13 @@ func rootCmd() *cobra.Command {
 }
 
 func az(cmd *cobra.Command, args []string) error {
-	fmt.Printf("QQQ az:\n")
+	max, _ := cmd.Flags().GetInt("max")
+	debug, _ := cmd.Flags().GetBool("debug")
+	code, _ := cmd.Flags().GetString("code")
+	fmt.Printf("type: %s\n", reflect.TypeOf(max))
+	fmt.Printf("max: %d\n", max)
+	fmt.Printf("debug: %t\n", debug)
+	fmt.Printf("code: %s\n", code)
 	return nil
 }
 
