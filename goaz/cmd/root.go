@@ -21,6 +21,7 @@ func rootCmd() *cobra.Command {
 	}
 	cmd.Flags().BoolP("debug", "d", false, "out encoding")
 	cmd.Flags().IntP("max", "m", 13772, "max entries")
+	cmd.Flags().IntP("bid", "b", -1, "book id")
 	cmd.Flags().StringP("code", "c", "utf-8", "out encoding")
 	cmd.AddCommand(testCmd())
 	return cmd
@@ -30,13 +31,17 @@ func az(cmd *cobra.Command, args []string) error {
 	max, _ := cmd.Flags().GetInt("max")
 	debug, _ := cmd.Flags().GetBool("debug")
 	code, _ := cmd.Flags().GetString("code")
+	bid, _ := cmd.Flags().GetInt("bid")
 	fmt.Printf("type: %s\n", reflect.TypeOf(max))
 	fmt.Printf("max: %d\n", max)
 	fmt.Printf("debug: %t\n", debug)
 	fmt.Printf("code: %s\n", code)
+	fmt.Printf("bid: %s\n", bid)
 
-	rand.Seed(time.Now().UnixNano())
-	bid := rand.Intn(max) // [0, max)
+	if bid == -1 {
+		rand.Seed(time.Now().UnixNano())
+		bid = rand.Intn(max) // [0, max)
+	}
 	text := getbook(bid)
 	fmt.Printf("text: %s\n", text)
 
