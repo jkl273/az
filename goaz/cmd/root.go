@@ -39,7 +39,7 @@ func az(cmd *cobra.Command, args []string) error {
 	bid := rand.Intn(max) // [0, max)
 	text := getbook(bid)
 	fmt.Printf("text: %s\n", text)
-	
+
 	return nil
 }
 
