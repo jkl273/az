@@ -2,6 +2,8 @@ package cmd
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 	"reflect"
 	"os"
 	"github.com/spf13/cobra"
@@ -29,6 +31,9 @@ func az(cmd *cobra.Command, args []string) error {
 	fmt.Printf("max: %d\n", max)
 	fmt.Printf("debug: %t\n", debug)
 	fmt.Printf("code: %s\n", code)
+
+	rand.Seed(time.Now().UnixNano())
+	fmt.Println(rand.Intn(max)) // [0, max)
 	return nil
 }
 
