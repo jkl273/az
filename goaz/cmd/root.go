@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"strconv"
+	"io/ioutil"
+	"net/http"
 	"fmt"
 	"math/rand"
 	"time"
@@ -33,7 +36,10 @@ func az(cmd *cobra.Command, args []string) error {
 	fmt.Printf("code: %s\n", code)
 
 	rand.Seed(time.Now().UnixNano())
-	fmt.Println(rand.Intn(max)) // [0, max)
+	bid := rand.Intn(max) // [0, max)
+	text := getbook(bid)
+	fmt.Printf("text: %s\n", text)
+	
 	return nil
 }
 
@@ -44,4 +50,14 @@ func Execute() {
 		fmt.Printf("%s: %s\n", os.Args[0], err)
 		os.Exit(1)
 	}
+}
+
+func getbook(bid int) []byte {
+	fmt.Printf("bid: %d:%s\n", bid, strconv.Itoa(bid))
+	url := "http://www.aozorahack.net/api/v0.1/" + "books/" + strconv.Itoa(bid) + "/content"
+	fmt.Printf("url: %s\n", url)
+	resp, _ := http.Get(url)
+	defer resp.Body.Close()
+	body, _ := ioutil.ReadAll(resp.Body)
+	return body
 }
